@@ -74,14 +74,41 @@ void imprimeA(Aluno a1){
 
 void abreDisc(){
 	FILE * fp;
+	char x;
+    int i,top=0;
 	fp = fopen ("dados.txt", "r");
 	if(fp==NULL){
-        printf("arquivo vazio\n");
-    }else{
+		printf("digite o nome do professor e disciplina\n");
+		printf("aperte 0 para finalizar\n");	    
+		do{
+			scanf("%c",&x);
+			if(x!='0'){
+			    buffer[top++]=x;
+			}
+		}while(x!='0');
 		
+		
+		fp = fopen ("dados.txt", "w");
+		for(i=0;i<top;i++)
+		{
+		    fprintf(fp,"%c",buffer[i]);
+		}
+		fclose(fp);
+    }else{
+		 while(fscanf(fp,"%c",&x)!=EOF){
+            printf("%c",x);
+            buffer[top++]=x;
+        }
+        fclose(fp);
 	}
 
 }
+
+void salvar(Disciplina *x){
+	for(int i)
+	
+}
+
 int main(){
 	Disciplina x;
 	x.top = 0;
@@ -109,8 +136,11 @@ int main(){
 					imprimeA(x.v[i]);
 				}
 			break;
+			case 4:
+				salva(&x);
+			break;
 			default:
-				printf("opcao invalida");
+				printf("opcao invalida\n");
 			break;
 		}
 	}while(control!=5);
