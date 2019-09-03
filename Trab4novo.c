@@ -55,6 +55,7 @@ void ADDaluno(Disciplina *x){
 	
 	fgets(nome2,sizeof(nome2),stdin);
 	fgets(nome2,sizeof(nome2),stdin);
+	
 	scanf("%ld",&ra);
 	scanf("%d",&idade);
 	scanf("%f",&CR);
@@ -72,18 +73,29 @@ void imprimeA(Aluno a1){
 }
 
 
-void abreDisc(){
+void abreDisc(Disciplina *a){
 	FILE * fp;
 	char x;
-    int i,top=0;
+    int i,top=0,aux=0;
 	fp = fopen ("dados.txt", "r");
 	if(fp==NULL){
-		printf("digite o nome do professor e disciplina\n");
+		printf("digite o nome da disciplina\n");
 		printf("aperte 0 para finalizar\n");	    
 		do{
 			scanf("%c",&x);
 			if(x!='0'){
 			    buffer[top++]=x;
+			    a->nome[aux++]=x;
+			}
+		}while(x!='0');
+		printf("digite o nome do professor \n");
+		printf("aperte 0 para finalizar\n");
+		aux=0;    
+		do{
+			scanf("%c",&x);
+			if(x!='0'){
+			    buffer[top++]=x;
+			    a->professor[aux++]=x;
 			}
 		}while(x!='0');
 		
@@ -95,18 +107,42 @@ void abreDisc(){
 		}
 		fclose(fp);
     }else{
-		 while(fscanf(fp,"%c",&x)!=EOF){
-            printf("%c",x);
-            buffer[top++]=x;
-        }
-        fclose(fp);
+		while(fscanf(fp,"%c",&x)!=EOF){
+	            printf("%c",x);
+	            buffer[top++]=x;
+	        }
+      		fclose(fp);
 	}
 
 }
 
 void salvar(Disciplina *x){
-	for(int i)
+	FILE * fp;
+	char nom[200];
+	long int auxR,toop=x->top;
+	//guardar a disciplina pra n perder ela
+	fp = fopen ("dados.txt", "r");
+	char buffer[1000],chek;
+	int num=0;
+	while(fscanf(fp,"%c",&chek)!=EOF){
+	            buffer[num++]=chek;
+	        }
+      	fclose(fp);
 	
+	fp = fopen ("dados.txt", "w");
+	if(fp!=NULL){
+		for(int j=0;j<num;j++)
+		{
+		    fprintf(fp,"%c",buffer[j]);
+		}
+		 
+		for(int i=0; i<toop;i++){
+			auxR=x->v[i].ra;
+			strcpy(nom,x->v[i].nome);
+			fprintf(fp,"%s/%ld",nom,auxR);
+		}
+	}
+	fclose(fp);
 }
 
 int main(){
@@ -114,7 +150,7 @@ int main(){
 	x.top = 0;
 	int control = 0;
 	
-	abreDisc();	
+	abreDisc(&x);	
 	
 	do{
 		printf("* 1 - adicionar aluno.\n");
@@ -137,9 +173,10 @@ int main(){
 				}
 			break;
 			case 4:
-				salva(&x);
+				salvar(&x);
 			break;
 			default:
+				if(control!=5)
 				printf("opcao invalida\n");
 			break;
 		}
