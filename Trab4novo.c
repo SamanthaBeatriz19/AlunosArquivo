@@ -44,7 +44,7 @@ typedef struct Disciplina{
 	int top;//numero de alunos. começa com zero.
 }Disciplina;
 //criando o buffer como variavel global
-char buffer[10000]; 
+char buffer[1000]; 
 
 
 void ADDaluno(Disciplina *x){
@@ -65,7 +65,6 @@ void ADDaluno(Disciplina *x){
 	strcpy(x->v[x->top].nome,nome2);
 }
 void imprimeA(Aluno a1){
-	printf("~~~~~~~~~~~~~~~~~~~~~~");
 	printf("NOME: %s\n",a1.nome);
 	printf("RA: %ld\n",a1.ra);
 	printf("IDADE: %d\n",a1.idade);
@@ -108,9 +107,10 @@ void abreDisc(Disciplina *a){
 		fclose(fp);
     }else{
 		while(fscanf(fp,"%c",&x)!=EOF){
-	            printf("%c",x);
-	            buffer[top++]=x;
-	        }
+			printf("%c",x);
+		    buffer[top++]=x;
+	    }
+		printf("\n");
       		fclose(fp);
 	}
 
@@ -119,7 +119,9 @@ void abreDisc(Disciplina *a){
 void salvar(Disciplina *x){
 	FILE * fp;
 	char nom[200];
-	long int auxR,toop=x->top;
+	long int auxR;
+	int auxIdade,toop=x->top;
+	float auxCR;
 	//guardar a disciplina pra n perder ela
 	fp = fopen ("dados.txt", "r");
 	char buffer[1000],chek;
@@ -137,9 +139,11 @@ void salvar(Disciplina *x){
 		}
 		 
 		for(int i=0; i<toop;i++){
-			auxR=x->v[i].ra;
+			auxR = x->v[i].ra;
+			auxIdade = x->v[i].idade;
+			auxCR = x->v[i].CR;
 			strcpy(nom,x->v[i].nome);
-			fprintf(fp,"%s/%ld",nom,auxR);
+			fprintf(fp,"%s/%ld/%d/%.2f\n",nom,auxR,auxIdade,auxCR);
 		}
 	}
 	fclose(fp);
@@ -156,8 +160,9 @@ int main(){
 		printf("* 1 - adicionar aluno.\n");
 		printf("* 2 - remover aluno.\n");
 		printf("* 3 - Listar alunos.\n");
-		printf("* 4 - salvar\n ");
-		printf("* 5 - sair.\n");
+		printf("* 4 - salvar.\n");
+		printf("* 5 - sair.\n ");
+		
 		scanf("%d",&control);
 
 		switch(control){
@@ -182,10 +187,10 @@ int main(){
 		}
 	}while(control!=5);
 
-	printf("tamanho registro %lu\n",sizeof(Aluno));
-	printf("tamanho long int %lu\n",sizeof(long int));
-	printf("tamanho int %lu\n",sizeof(int));
-	printf("tamanho float %lu\n",sizeof(float));
-	printf("tamanho char 200*%lu\n",sizeof(char));
+	//printf("tamanho registro %lu\n",sizeof(Aluno));
+	//printf("tamanho long int %lu\n",sizeof(long int));
+	//printf("tamanho int %lu\n",sizeof(int));
+	//printf("tamanho float %lu\n",sizeof(float));
+	//printf("tamanho char 200*%lu\n",sizeof(char));
 return 0;
 }
